@@ -56,7 +56,8 @@ const setRemoteData = async () => {
     await setPic(pic);
     genIndex(markup);
   } catch (e) {
-    throw new Error(e.message);
+    console.error("INIT ERROR:", e);
+  throw e;
   }
 };
 
