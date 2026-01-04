@@ -37,8 +37,16 @@ const setLocalData = async () => {
 //Remote initialization
 const setRemoteData = async () => {
   try {
-    let res = await axios.get(picPath, {
-      responseType: "arraybuffer",
+    let pic;
+
+if (picPath.startsWith("http://") || picPath.startsWith("https://")) {
+  const res = await axios.get(picPath, { responseType: "arraybuffer" });
+  pic = res.data;
+} else {
+  const localPic = path.join(__dirname, "../local/", picPath);
+  pic = fs.readFileSync(localPic);
+}
+
     });
     const pic = res.data;
     let markup = "";
