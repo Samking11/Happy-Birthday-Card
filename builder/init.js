@@ -39,20 +39,19 @@ const setRemoteData = async () => {
   try {
     let pic;
 
-if (picPath.startsWith("http://") || picPath.startsWith("https://")) {
-  const res = await axios.get(picPath, { responseType: "arraybuffer" });
-  pic = res.data;
-} else {
-  const localPic = path.join(__dirname, "../local/", picPath);
-  pic = fs.readFileSync(localPic);
-}
+    if (picPath.startsWith("http://") || picPath.startsWith("https://")) {
+      const res = await axios.get(picPath, { responseType: "arraybuffer" });
+      pic = res.data;
+    } else {
+      const localPic = path.join(__dirname, "../local/", picPath);
+      pic = fs.readFileSync(localPic);
+    }
 
-    });
-    const pic = res.data;
     let markup = "";
+
     if (msgPath) {
       const article = msgPath.split("/").pop();
-      res = await axios.get(
+      const res = await axios.get(
         `https://api.telegra.ph/getPage/${article}?return_content=true`
       );
       const { content } = res.data.result;
@@ -61,13 +60,16 @@ if (picPath.startsWith("http://") || picPath.startsWith("https://")) {
         ""
       );
     }
+
     await setPic(pic);
     genIndex(markup);
+
   } catch (e) {
     console.error("INIT ERROR:", e);
-  throw e;
+    throw e;
   }
 };
+
 
 if (process.argv[2] === "--local") setLocalData();
 else if (process.argv[2] === "--remote") setRemoteData();
